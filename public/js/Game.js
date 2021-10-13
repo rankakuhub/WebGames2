@@ -100,6 +100,9 @@ class Example extends Phaser.Scene
 
     preload()
     {
+        game.scale.pageAlignHorizontally = true;
+        game.scale.pageAlignVertically = true;
+        game.scale.refresh();
         this.load.image('logo', '../assets/game/phaser3.png');
         this.load.image('mask', '../assets/game/grunge.png');
     }
@@ -107,6 +110,7 @@ class Example extends Phaser.Scene
 
     create()
     {
+
         const maskImage = this.make.image({
             x: 400,
             y: 300,
@@ -123,6 +127,8 @@ class Example extends Phaser.Scene
 
         this.add.image(400, 300, 'logo');
     }
+
+
 }
 
 const config = {
@@ -130,7 +136,9 @@ const config = {
     parent: 'phaser-example',
     width: 800,
     height: 600,
-    scene: [ Example ]
+    scene: [ Example ],
+
+
 };
 
 const game = new Phaser.Game(config);
