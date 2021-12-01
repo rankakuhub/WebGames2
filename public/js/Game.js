@@ -31,7 +31,7 @@ const game = new Phaser.Game(config);
         this.load.image('coin', '../assets/game/images/Coin.png');
 
         this.load.image('player1', '../assets/game/images/Isis Front Idle.png');
-        this.load.image('player2', '../assets/game/images/Isis Front Idle.png');
+        this.load.image('player2', '../assets/game/images/Ra Front Idle.png');
     }
 
 var player1Sprite;
