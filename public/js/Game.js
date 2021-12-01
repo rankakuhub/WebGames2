@@ -30,8 +30,8 @@ const game = new Phaser.Game(config);
 
         this.load.image('coin', '../assets/game/images/Coin.png');
 
-        this.load.image('player1', '../assets/game/images/Character_Placeholder.png');
-        this.load.image('player2', '../assets/game/images/Character_Placeholder.png');
+        this.load.image('player1', '../assets/game/images/Isis Front Idle.png');
+        this.load.image('player2', '../assets/game/images/Isis Front Idle.png');
     }
 
 var player1Sprite;
@@ -46,10 +46,10 @@ var scoreText;
         this.add.image(0,0, 'walls').setOrigin(0,0);
 
         player1Sprite = this.physics.add.sprite(200, 500, 'player1');
-        player1Sprite.setScale(0.5);
+        player1Sprite.setScale(2);
 
         player2Sprite = this.physics.add.sprite(200, 600, 'player2');
-        player2Sprite.setScale(0.5);
+        player2Sprite.setScale(2);
 
         //collect coins/combined score
         coin = this.physics.add.sprite(400, 500, 'coin');
