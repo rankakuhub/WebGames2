@@ -6,6 +6,7 @@ const config = {
     physics: {
         default: 'arcade',
         arcade: {
+            debug: true,
             gravity: {y: 0}
         }
     },
@@ -28,21 +29,48 @@ const game = new Phaser.Game(config);
         this.load.image('ground', '../assets/game/images/Level2_Ground.png');
         this.load.image('walls', '../assets/game/images/Level2_Walls.png');
 
+        this.load.image('tiles', '../assets/game/images/WGD2-Tilesheet2.2.png')
+        this.load.image('tiles2', '../assets/game/images/WGD2-Tilesheet_Walls2.1.png')
+        this.load.tilemapTiledJSON('tilemap', '../assets/game/images/Level_2.json')
+
         this.load.image('coin', '../assets/game/images/Coin.png');
 
         this.load.image('player1', '../assets/game/images/Isis Front Idle.png');
         this.load.image('player2', '../assets/game/images/Ra Front Idle.png');
+
+        this.load.image('enemy', '../assets/game/images/Enemy_Placeholder.png')
     }
 
-var player1Sprite;
-var player2Sprite;
-var coin;
-var score = 0;
-var scoreText;
+let player1Sprite;
+let player2Sprite;
+let coin;
+let score = 0;
+let scoreText;
+let cursors;
+let enemy;
+let map;
+let wallsLayer;
+
 
     function create()
     {
-        this.add.image(0,0, 'ground').setOrigin(0,0);
+        const map = this.make.tilemap({ key: 'tilemap' })
+        const tileset1 = map.addTilesetImage('WGD2-Tilesheet2.2', 'tiles')
+        const tileset2 = map.addTilesetImage('WGD2-Tilesheet_Walls2.1', 'tiles2')
+
+        map.createStaticLayer('Ground', tileset1)
+        wallsLayer = map.createStaticLayer('Walls', tileset2)
+
+        wallsLayer.setCollisionByProperty({collides: true })
+
+        const debugGraphics = this.add.graphics().setAlpha(0.7)
+        wallsLayer.renderDebug(debugGraphics, {
+            tileColor: null,
+            collidingTileColor: new Phaser.Display.Color(243, 234, 48, 255),
+            faceColor: new Phaser.Display.Color(40, 39, 37, 255)
+        })
+
+       // this.add.image(0,0, 'ground').setOrigin(0,0);
         this.add.image(0,0, 'walls').setOrigin(0,0);
 
         player1Sprite = this.physics.add.sprite(200, 500, 'player1');
@@ -56,9 +84,14 @@ var scoreText;
         coin2 = this.physics.add.sprite(400, 700, 'coin');
         scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#FFFAFA' });
 
+        enemy = this.physics.add.sprite(500, 600, 'enemy');
+        enemy.setScale(0.75);
+
         //camera follow player1
         this.cameras.main.startFollow(player1Sprite);
         this.cameras.main.zoom = 1;
+
+        this.physics.add.collider(player1Sprite, wallsLayer);
 
     }
 
@@ -111,6 +144,11 @@ function update(){
         if (cursors.down.isDown) {
             player2Sprite.y += 2;
         }
+
+        //enemy attacking stuff
+    let angle2 = Phaser.Math.Angle.Between(enemy.x,enemy.y,player1Sprite.x,player1Sprite.y);
+    enemy.setRotation(angle2);enemy.setRotation(angle2);
+    enemy.setRotation(angle2+Math.PI/2);
 }
 
 //add player scores
