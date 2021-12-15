@@ -150,7 +150,7 @@ class Level1 extends Phaser.Scene {
 //add player scores
         collectCoin (player1Sprite, coin) {
         coin.disableBody(true, true);
-        score += 5;
+        score += 10;
         scoreText.setText('Score: ' + score);
     }
 }
