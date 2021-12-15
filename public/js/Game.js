@@ -8,8 +8,6 @@ let
 let
     coin2;
 let
-    collectCoin;
-let
     score = 0;
 let
     scoreText;
@@ -48,8 +46,6 @@ class Level1 extends Phaser.Scene {
         this.load.image('enemy', '../assets/game/images/Enemy_Placeholder.png')
     }
 
-
-
     create() {
         const map = this.make.tilemap({key: 'tilemap'})
         const tileset1 = map.addTilesetImage('WGD2-Tilesheet2.2', 'tiles')
@@ -77,7 +73,7 @@ class Level1 extends Phaser.Scene {
         player2Sprite.setScale(2);
         //collect coins/combined score
         coin = this.physics.add.sprite(400, 500, 'coin');
-       // coin2 = this.physics.add.sprite(400, 700, 'coin');
+        coin2 = this.physics.add.sprite(400, 700, 'coin');
         scoreText = this.add.text(16, 16, 'score: 0', {fontSize: '32px', fill: '#FFFAFA'});
 
         enemy = this.physics.add.sprite(500, 600, 'enemy');
@@ -89,22 +85,23 @@ class Level1 extends Phaser.Scene {
 
         this.physics.add.collider(player1Sprite, wallsLayer);
 
+
     }
 
         update() {
 
-        //collect coins - for both players
         scoreText.x = player1Sprite.body.position.x;
-        this.physics.add.overlap(player1Sprite, coin, collectCoin, null, this);
-        this.physics.add.overlap(player2Sprite, coin, collectCoin, null, this);
+        //collect coins - for both players
 
-        this.physics.add.overlap(player1Sprite, this.coin2, collectCoin, null, this);
-        this.physics.add.overlap(player2Sprite, this.coin2, collectCoin, null, this);
+        this.physics.add.overlap(player1Sprite, coin, this.collectCoin, null, this);
+        this.physics.add.overlap(player2Sprite, coin, this.collectCoin, null, this);
+
+        this.physics.add.overlap(player1Sprite, coin2, this.collectCoin, null, this);
+        this.physics.add.overlap(player2Sprite, coin2, this.collectCoin, null, this);
 
         //score text position
         scoreText.x = player1Sprite.body.position.x - 350;
         scoreText.y = player1Sprite.body.position.y - 250;
-
 
         //player 1 movement
         this.keys = this.input.keyboard.addKeys(
@@ -151,11 +148,9 @@ class Level1 extends Phaser.Scene {
     }
 
 //add player scores
-    collectCoin(player1Sprite, coin) {
+        collectCoin (player1Sprite, coin) {
         coin.disableBody(true, true);
-
         score += 5;
         scoreText.setText('Score: ' + score);
     }
-
 }
