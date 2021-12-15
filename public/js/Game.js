@@ -1,27 +1,34 @@
-const config = {
-    type: Phaser.AUTO,
-    parent: 'phaser-example',
-    width: 800,
-    height: 600,
-    physics: {
-        default: 'arcade',
-        arcade: {
-            debug: true,
-            gravity: {y: 0}
-        }
-    },
-    scene: {
-        preload: preload,
-        create: create,
-        update: update,
-    },
+// Level class location
+let
+    player1Sprite;
+let
+    player2Sprite;
+let
+    coin;
+let
+    coin2;
+let
+    collectCoin;
+let
+    score = 0;
+let
+    scoreText;
+let
+    cursors;
+let
+    enemy;
+let
+    map;
+let
+    wallsLayer;
 
-};
+class Level1 extends Phaser.Scene {
 
-const game = new Phaser.Game(config);
+    constructor() {
+        super('Level1');
+    }
 
-    function preload()
-    {
+    preload() {
         game.scale.pageAlignHorizontally = true;
         game.scale.pageAlignVertically = true;
         game.scale.refresh();
@@ -41,27 +48,17 @@ const game = new Phaser.Game(config);
         this.load.image('enemy', '../assets/game/images/Enemy_Placeholder.png')
     }
 
-let player1Sprite;
-let player2Sprite;
-let coin;
-let score = 0;
-let scoreText;
-let cursors;
-let enemy;
-let map;
-let wallsLayer;
 
 
-    function create()
-    {
-        const map = this.make.tilemap({ key: 'tilemap' })
+    create() {
+        const map = this.make.tilemap({key: 'tilemap'})
         const tileset1 = map.addTilesetImage('WGD2-Tilesheet2.2', 'tiles')
         const tileset2 = map.addTilesetImage('WGD2-Tilesheet_Walls2.1', 'tiles2')
 
         map.createStaticLayer('Ground', tileset1)
         wallsLayer = map.createStaticLayer('Walls', tileset2)
 
-        wallsLayer.setCollisionByProperty({collides: true })
+        wallsLayer.setCollisionByProperty({collides: true})
 
         const debugGraphics = this.add.graphics().setAlpha(0.7)
         wallsLayer.renderDebug(debugGraphics, {
@@ -70,19 +67,18 @@ let wallsLayer;
             faceColor: new Phaser.Display.Color(40, 39, 37, 255)
         })
 
-       // this.add.image(0,0, 'ground').setOrigin(0,0);
-        this.add.image(0,0, 'walls').setOrigin(0,0);
+        this.add.image(0,0, 'ground').setOrigin(0,0);
+        this.add.image(0, 0, 'walls').setOrigin(0, 0);
 
         player1Sprite = this.physics.add.sprite(200, 500, 'player1');
         player1Sprite.setScale(2);
 
         player2Sprite = this.physics.add.sprite(200, 600, 'player2');
         player2Sprite.setScale(2);
-
         //collect coins/combined score
         coin = this.physics.add.sprite(400, 500, 'coin');
-        coin2 = this.physics.add.sprite(400, 700, 'coin');
-        scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#FFFAFA' });
+       // coin2 = this.physics.add.sprite(400, 700, 'coin');
+        scoreText = this.add.text(16, 16, 'score: 0', {fontSize: '32px', fill: '#FFFAFA'});
 
         enemy = this.physics.add.sprite(500, 600, 'enemy');
         enemy.setScale(0.75);
@@ -95,27 +91,29 @@ let wallsLayer;
 
     }
 
-function update(){
+        update() {
 
         //collect coins - for both players
         scoreText.x = player1Sprite.body.position.x;
         this.physics.add.overlap(player1Sprite, coin, collectCoin, null, this);
         this.physics.add.overlap(player2Sprite, coin, collectCoin, null, this);
 
-        this.physics.add.overlap(player1Sprite, coin2, collectCoin, null, this);
-        this.physics.add.overlap(player2Sprite, coin2, collectCoin, null, this);
+        this.physics.add.overlap(player1Sprite, this.coin2, collectCoin, null, this);
+        this.physics.add.overlap(player2Sprite, this.coin2, collectCoin, null, this);
 
         //score text position
-        scoreText.x = player1Sprite.body.position.x -350;
-        scoreText.y = player1Sprite.body.position.y -250;
+        scoreText.x = player1Sprite.body.position.x - 350;
+        scoreText.y = player1Sprite.body.position.y - 250;
 
 
         //player 1 movement
         this.keys = this.input.keyboard.addKeys(
-            {up:Phaser.Input.Keyboard.KeyCodes.W,
-                down:Phaser.Input.Keyboard.KeyCodes.S,
-                left:Phaser.Input.Keyboard.KeyCodes.A,
-                right:Phaser.Input.Keyboard.KeyCodes.D});
+            {
+                up: Phaser.Input.Keyboard.KeyCodes.W,
+                down: Phaser.Input.Keyboard.KeyCodes.S,
+                left: Phaser.Input.Keyboard.KeyCodes.A,
+                right: Phaser.Input.Keyboard.KeyCodes.D
+            });
 
         if (this.keys.left.isDown) {
             player1Sprite.x -= 2;
@@ -146,16 +144,18 @@ function update(){
         }
 
         //enemy attacking stuff
-    let angle2 = Phaser.Math.Angle.Between(enemy.x,enemy.y,player1Sprite.x,player1Sprite.y);
-    enemy.setRotation(angle2);enemy.setRotation(angle2);
-    enemy.setRotation(angle2+Math.PI/2);
-}
+        let angle2 = Phaser.Math.Angle.Between(enemy.x, enemy.y, player1Sprite.x, player1Sprite.y);
+        enemy.setRotation(angle2);
+        enemy.setRotation(angle2);
+        enemy.setRotation(angle2 + Math.PI / 2);
+    }
 
 //add player scores
-function collectCoin (player1Sprite, coin)
-{
-    coin.disableBody(true, true);
+    collectCoin(player1Sprite, coin) {
+        coin.disableBody(true, true);
 
-    score += 5;
-    scoreText.setText('Score: ' + score);
+        score += 5;
+        scoreText.setText('Score: ' + score);
+    }
+
 }
