@@ -1,24 +1,22 @@
 // Level class location
-let
-    player1Sprite;
-let
-    player2Sprite;
-let
-    coin;
-let
-    coin2;
-let
-    score = 0;
-let
-    scoreText;
-let
-    cursors;
-let
-    enemy;
-let
-    map;
-let
-    wallsLayer;
+let player1Sprite;
+let player2Sprite;
+let coin;
+let coin2;
+let score = 0;
+let scoreText;
+let cursors;
+let enemy;
+let map;
+let wallsLayer;
+let playerArrow;
+let control = false;
+let worldBounds;
+let inputCursor;
+let mouse;
+let spaceBar;
+let kills = 0;
+let killText;
 
 class Level1 extends Phaser.Scene {
 
@@ -33,6 +31,8 @@ class Level1 extends Phaser.Scene {
 
         this.load.image('ground', '../assets/game/images/Level2_Ground.png');
         this.load.image('walls', '../assets/game/images/Level2_Walls.png');
+
+        this.load.image('arrow', '../assets/game/images/ArrowAsset.png');
 
         this.load.image('tiles', '../assets/game/images/WGD2-Tilesheet2.2.png')
         this.load.image('tiles2', '../assets/game/images/WGD2-Tilesheet_Walls2.1.png')
@@ -76,22 +76,51 @@ class Level1 extends Phaser.Scene {
         coin2 = this.physics.add.sprite(400, 700, 'coin');
         scoreText = this.add.text(16, 16, 'score: 0', {fontSize: '32px', fill: '#FFFAFA'});
 
+
+
         enemy = this.physics.add.sprite(500, 600, 'enemy');
         enemy.setScale(0.75);
+        killText = this.add.text(16, 16, 'kills: 0', {fontSize: '32px', fill: '#FFFAFA'});
 
         //camera follow player1
+        this.keys = this.input.keyboard.createCursorKeys();
         this.cameras.main.startFollow(player1Sprite);
         this.cameras.main.zoom = 1;
+        inputCursor = this.input;
 
         this.physics.add.collider(player1Sprite, wallsLayer);
+        worldBounds = this.physics.world.bounds;
 
+        playerArrow = this.physics.add.sprite(player1Sprite.x,player1Sprite.y,'arrow');
+        playerArrow.setScale(0)
+        spaceBar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        mouse = this.input.mousePointer;
 
     }
 
         update() {
 
         scoreText.x = player1Sprite.body.position.x;
+
+        killText.x = player1Sprite.body.position.x;
         //collect coins - for both players
+
+            if(spaceBar.isDown && control === false){
+                //for fire again
+                playerArrow = this.physics.add.sprite(player1Sprite.x,player1Sprite.y,'arrow');
+                //move to mouse position
+                this.physics.moveTo(playerArrow,inputCursor.x,inputCursor.y, 250);
+                playerArrow.setScale(1);
+                control = true;
+
+            }
+
+            if(playerArrow.x > worldBounds.width || playerArrow.y > worldBounds.height ||playerArrow.x < 0 || playerArrow.y < 0)
+            {
+                control = false;
+            }
+
+            this.physics.add.overlap(playerArrow, enemy, this.destroy,null,this);
 
         this.physics.add.overlap(player1Sprite, coin, this.collectCoin, null, this);
         this.physics.add.overlap(player2Sprite, coin, this.collectCoin, null, this);
@@ -102,6 +131,9 @@ class Level1 extends Phaser.Scene {
         //score text position
         scoreText.x = player1Sprite.body.position.x - 350;
         scoreText.y = player1Sprite.body.position.y - 250;
+
+        killText.x = player1Sprite.body.position.x - -250;
+        killText.y = player1Sprite.body.position.y - 250;
 
         //player 1 movement
         this.keys = this.input.keyboard.addKeys(
@@ -146,6 +178,14 @@ class Level1 extends Phaser.Scene {
         enemy.setRotation(angle2);
         enemy.setRotation(angle2 + Math.PI / 2);
     }
+
+         destroy(playerArrow,enemy,) {
+             enemy.disableBody(true, true);
+             playerArrow.disableBody(true, true);
+             control = false;
+             kills += 1;
+             killText.setText('Kills: ' + kills);
+         }
 
 //add player scores
         collectCoin (player1Sprite, coin) {
