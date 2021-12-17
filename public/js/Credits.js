@@ -6,7 +6,7 @@ class Credits extends Phaser.Scene {
 
     //pre loads the background image
     preload() {
-        this.load.image('Background1', '../assets/game/images/CredsBground.png');
+        this.load.image('Background1', 'assets/game/CredsBground.png');
     }
 
 

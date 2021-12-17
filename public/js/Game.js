@@ -29,21 +29,21 @@ class Level1 extends Phaser.Scene {
         game.scale.pageAlignVertically = true;
         game.scale.refresh();
 
-        this.load.image('ground', '../assets/game/images/Level2_Ground.png');
-        this.load.image('walls', '../assets/game/images/Level2_Walls.png');
+        this.load.image('ground', 'assets/game/Level2_Ground.png');
+        this.load.image('walls', 'assets/game/Level2_Walls.png');
 
-        this.load.image('arrow', '../assets/game/images/ArrowAsset.png');
+        this.load.image('arrow', 'assets/game/ArrowAsset.png');
 
-        this.load.image('tiles', '../assets/game/images/WGD2-Tilesheet2.2.png')
-        this.load.image('tiles2', '../assets/game/images/WGD2-Tilesheet_Walls2.1.png')
-        this.load.tilemapTiledJSON('tilemap', '../assets/game/images/Level_2.json')
+        this.load.image('tiles', 'assets/game/WGD2-Tilesheet2.2.png')
+        this.load.image('tiles2', 'assets/game/WGD2-Tilesheet_Walls2.1.png')
+        this.load.tilemapTiledJSON('tilemap', 'assets/game/Level_2.json')
 
-        this.load.image('coin', '../assets/game/images/Coin.png');
+        this.load.image('coin', 'assets/game/Coin.png');
 
-        this.load.image('player1', '../assets/game/images/Isis Front Idle.png');
-        this.load.image('player2', '../assets/game/images/Ra Front Idle.png');
+        this.load.image('player1', 'assets/game/Isis Front Idle.png');
+        this.load.image('player2', 'assets/game/Ra Front Idle.png');
 
-        this.load.image('enemy', '../assets/game/images/Enemy_Placeholder.png')
+        this.load.image('enemy', 'assets/game/Enemy_Placeholder.png')
     }
 
     create() {

@@ -6,7 +6,7 @@ class MenuUi extends Phaser.Scene {
 
     //pre loads the background image for the menu user interface
     preload() {
-        this.load.image('Background', '../assets/game/images/MenuUi.png');
+        this.load.image('Background', 'assets/game/MenuUi.png');
     }
 
 
