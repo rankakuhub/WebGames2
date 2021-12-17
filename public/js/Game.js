@@ -3,6 +3,12 @@ let player1Sprite;
 let player2Sprite;
 let coin;
 let coin2;
+let coin3;
+let coin4;
+let coin5;
+let coin6;
+let coin7;
+let coin8;
 let score = 0;
 let scoreText;
 let cursors;
@@ -72,8 +78,14 @@ class Level1 extends Phaser.Scene {
         player2Sprite = this.physics.add.sprite(200, 600, 'player2');
         player2Sprite.setScale(2);
         //collect coins/combined score
-        coin = this.physics.add.sprite(400, 500, 'coin');
-        coin2 = this.physics.add.sprite(400, 700, 'coin');
+        coin = this.physics.add.sprite(1125, 200, 'coin');
+        coin2 = this.physics.add.sprite(1125, 900, 'coin');
+        coin3 = this.physics.add.sprite(475, 300, 'coin');
+        coin4 = this.physics.add.sprite(475, 800, 'coin');
+        coin5 = this.physics.add.sprite(1765, 800, 'coin');
+        coin6 = this.physics.add.sprite(1765, 300, 'coin');
+        coin7 = this.physics.add.sprite(1500, 550, 'coin');
+        coin8 = this.physics.add.sprite(750, 550, 'coin');
         scoreText = this.add.text(16, 16, 'score: 0', {fontSize: '32px', fill: '#FFFAFA'});
 
 
@@ -127,6 +139,24 @@ class Level1 extends Phaser.Scene {
 
         this.physics.add.overlap(player1Sprite, coin2, this.collectCoin, null, this);
         this.physics.add.overlap(player2Sprite, coin2, this.collectCoin, null, this);
+
+        this.physics.add.overlap(player1Sprite, coin3, this.collectCoin, null, this);
+        this.physics.add.overlap(player2Sprite, coin3, this.collectCoin, null, this);
+
+        this.physics.add.overlap(player1Sprite, coin4, this.collectCoin, null, this);
+        this.physics.add.overlap(player2Sprite, coin4, this.collectCoin, null, this);
+
+        this.physics.add.overlap(player1Sprite, coin5, this.collectCoin, null, this);
+        this.physics.add.overlap(player2Sprite, coin5, this.collectCoin, null, this);
+
+        this.physics.add.overlap(player1Sprite, coin6, this.collectCoin, null, this);
+        this.physics.add.overlap(player2Sprite, coin6, this.collectCoin, null, this);
+
+        this.physics.add.overlap(player1Sprite, coin7, this.collectCoin, null, this);
+        this.physics.add.overlap(player2Sprite, coin7, this.collectCoin, null, this);
+
+        this.physics.add.overlap(player1Sprite, coin8, this.collectCoin, null, this);
+        this.physics.add.overlap(player2Sprite, coin8, this.collectCoin, null, this);
 
         //score text position
         scoreText.x = player1Sprite.body.position.x - 350;
