@@ -13,6 +13,13 @@ let score = 0;
 let scoreText;
 let cursors;
 let enemy;
+let enemy2;
+let enemy3;
+let enemy4;
+let enemy5;
+let enemy6;
+let enemy7;
+let enemy8;
 let map;
 let wallsLayer;
 let playerArrow;
@@ -90,8 +97,29 @@ class Level1 extends Phaser.Scene {
 
 
 
-        enemy = this.physics.add.sprite(500, 600, 'enemy');
+        enemy = this.physics.add.sprite(500, 550, 'enemy');
         enemy.setScale(0.75);
+
+        enemy2 = this.physics.add.sprite(950, 300, 'enemy');
+        enemy2.setScale(0.75);
+
+        enemy3 = this.physics.add.sprite(1300, 300, 'enemy');
+        enemy3.setScale(0.75);
+
+        enemy4 = this.physics.add.sprite(950, 800, 'enemy');
+        enemy4.setScale(0.75);
+
+        enemy5 = this.physics.add.sprite(1300,800, 'enemy');
+        enemy5.setScale(0.75);
+
+        enemy6 = this.physics.add.sprite(1765, 550, 'enemy');
+        enemy6.setScale(0.75);
+
+        enemy7 = this.physics.add.sprite(1985, 550, 'enemy');
+        enemy7.setScale(0.75);
+
+        enemy8 = this.physics.add.sprite(1125, 550, 'enemy');
+        enemy8.setScale(0.75);
         killText = this.add.text(16, 16, 'kills: 0', {fontSize: '32px', fill: '#FFFAFA'});
 
         //camera follow player1
@@ -132,8 +160,17 @@ class Level1 extends Phaser.Scene {
                 control = false;
             }
 
+            //kill enemies
             this.physics.add.overlap(playerArrow, enemy, this.destroy,null,this);
+            this.physics.add.overlap(playerArrow, enemy2, this.destroy,null,this);
+            this.physics.add.overlap(playerArrow, enemy3, this.destroy,null,this);
+            this.physics.add.overlap(playerArrow, enemy4, this.destroy,null,this);
+            this.physics.add.overlap(playerArrow, enemy5, this.destroy,null,this);
+            this.physics.add.overlap(playerArrow, enemy6, this.destroy,null,this);
+            this.physics.add.overlap(playerArrow, enemy7, this.destroy,null,this);
+            this.physics.add.overlap(playerArrow, enemy8, this.destroy,null,this);
 
+        //coin pickup
         this.physics.add.overlap(player1Sprite, coin, this.collectCoin, null, this);
         this.physics.add.overlap(player2Sprite, coin, this.collectCoin, null, this);
 
@@ -209,7 +246,7 @@ class Level1 extends Phaser.Scene {
         enemy.setRotation(angle2 + Math.PI / 2);
     }
 
-         destroy(playerArrow,enemy,) {
+         destroy(playerArrow,enemy) {
              enemy.disableBody(true, true);
              playerArrow.disableBody(true, true);
              control = false;
