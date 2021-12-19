@@ -58,8 +58,8 @@ class Level1 extends Phaser.Scene {
         this.load.image('tiles', 'assets/game/WGD2-Tilesheet2.2.png')
         this.load.image('tiles2', 'assets/game/WGD2-Tilesheet_Walls2.1.png')
         this.load.tilemapTiledJSON('tilemap', 'assets/game/Level_2.json')
-        this.load.image('tiles', '../assets/game/images/WGD2-FinalTilesheet.png')
-        this.load.tilemapTiledJSON('tilemap', '../assets/game/images/Level2_Final.json')
+        this.load.image('tiles', 'assets/game/WGD2-FinalTilesheet.png')
+        this.load.tilemapTiledJSON('tilemap', 'assets/game/Level2_Final.json')
 
         this.load.image('coin', 'assets/game/Coin.png');
 
@@ -286,8 +286,9 @@ class Level1 extends Phaser.Scene {
              playerArrow.disableBody(true, true);
              control = false;
              kills += 1;
-             killText.setText('Kills: ' + kills);
+             killText.setText('P1 Kills: ' + kills);
          }
+
 
         //collect coin and add 10 points to score player 1
         collectCoin (player1Sprite, coin) {
