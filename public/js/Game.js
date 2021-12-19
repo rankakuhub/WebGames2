@@ -21,7 +21,6 @@ let enemy6;
 let enemy7;
 let enemy8;
 let map;
-let wallsLayer;
 let playerArrow;
 let control = false;
 let worldBounds;
@@ -47,9 +46,8 @@ class Level1 extends Phaser.Scene {
 
         this.load.image('arrow', '../assets/game/images/ArrowAsset.png');
 
-        this.load.image('tiles', '../assets/game/images/WGD2-Tilesheet2.2.png')
-        this.load.image('tiles2', '../assets/game/images/WGD2-Tilesheet_Walls2.1.png')
-        this.load.tilemapTiledJSON('tilemap', '../assets/game/images/Level_2.json')
+        this.load.image('tiles', '../assets/game/images/WGD2-FinalTilesheet.png')
+        this.load.tilemapTiledJSON('tilemap', '../assets/game/images/Level2_Final.json')
 
         this.load.image('coin', '../assets/game/images/Coin.png');
 
@@ -61,11 +59,11 @@ class Level1 extends Phaser.Scene {
 
     create() {
         const map = this.make.tilemap({key: 'tilemap'})
-        const tileset1 = map.addTilesetImage('WGD2-Tilesheet2.2', 'tiles')
-        const tileset2 = map.addTilesetImage('WGD2-Tilesheet_Walls2.1', 'tiles2')
+        const tileset = map.addTilesetImage('WGD2 - FinalTilesheet', 'tiles')
 
-        map.createStaticLayer('Ground', tileset1)
-        wallsLayer = map.createStaticLayer('Walls', tileset2)
+
+        map.createStaticLayer('Ground', tileset)
+        const wallsLayer = map.createStaticLayer('Walls', tileset)
 
         wallsLayer.setCollisionByProperty({collides: true})
 
