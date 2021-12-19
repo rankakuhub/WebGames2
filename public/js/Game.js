@@ -10,7 +10,9 @@ let coin6;
 let coin7;
 let coin8;
 let score = 0;
+let score2 = 0;
 let scoreText;
+let scoreText2;
 let cursors;
 let enemy;
 let enemy2;
@@ -29,8 +31,11 @@ let inputCursor;
 let mouse;
 let spaceBar;
 let kills = 0;
+let kills2 = 0;
 let killText;
+let killText2;
 
+//class dedicated to level 1 of the game with unique name
 class Level1 extends Phaser.Scene {
 
     constructor() {
@@ -44,12 +49,17 @@ class Level1 extends Phaser.Scene {
 
         this.load.image('ground', 'assets/game/Level2_Ground.png');
         this.load.image('walls', 'assets/game/Level2_Walls.png');
+        //loads the image assets ready for creation
+        this.load.image('ground', '../assets/game/images/Level2_Ground.png');
+        this.load.image('walls', '../assets/game/images/Level2_Walls.png');
 
         this.load.image('arrow', 'assets/game/ArrowAsset.png');
 
         this.load.image('tiles', 'assets/game/WGD2-Tilesheet2.2.png')
         this.load.image('tiles2', 'assets/game/WGD2-Tilesheet_Walls2.1.png')
         this.load.tilemapTiledJSON('tilemap', 'assets/game/Level_2.json')
+        this.load.image('tiles', '../assets/game/images/WGD2-FinalTilesheet.png')
+        this.load.tilemapTiledJSON('tilemap', '../assets/game/images/Level2_Final.json')
 
         this.load.image('coin', 'assets/game/Coin.png');
 
@@ -61,12 +71,13 @@ class Level1 extends Phaser.Scene {
 
     create() {
         const map = this.make.tilemap({key: 'tilemap'})
-        const tileset1 = map.addTilesetImage('WGD2-Tilesheet2.2', 'tiles')
-        const tileset2 = map.addTilesetImage('WGD2-Tilesheet_Walls2.1', 'tiles2')
+        const tileset = map.addTilesetImage('WGD2 - FinalTilesheet', 'tiles')
 
-        map.createStaticLayer('Ground', tileset1)
-        wallsLayer = map.createStaticLayer('Walls', tileset2)
 
+        map.createStaticLayer('Ground', tileset)
+        const wallsLayer = map.createStaticLayer('Walls', tileset)
+
+        //wall collider set to true
         wallsLayer.setCollisionByProperty({collides: true})
 
         const debugGraphics = this.add.graphics().setAlpha(0.7)
@@ -76,14 +87,18 @@ class Level1 extends Phaser.Scene {
             faceColor: new Phaser.Display.Color(40, 39, 37, 255)
         })
 
+        //adds the ground and wall layers onto the game
         this.add.image(0,0, 'ground').setOrigin(0,0);
         this.add.image(0, 0, 'walls').setOrigin(0, 0);
 
+        //player 1 physics
         player1Sprite = this.physics.add.sprite(200, 500, 'player1');
         player1Sprite.setScale(2);
 
+        //player 2 physics
         player2Sprite = this.physics.add.sprite(200, 600, 'player2');
         player2Sprite.setScale(2);
+
         //collect coins/combined score
         coin = this.physics.add.sprite(1125, 200, 'coin');
         coin2 = this.physics.add.sprite(1125, 900, 'coin');
@@ -93,10 +108,12 @@ class Level1 extends Phaser.Scene {
         coin6 = this.physics.add.sprite(1765, 300, 'coin');
         coin7 = this.physics.add.sprite(1500, 550, 'coin');
         coin8 = this.physics.add.sprite(750, 550, 'coin');
-        scoreText = this.add.text(16, 16, 'score: 0', {fontSize: '32px', fill: '#FFFAFA'});
 
+        //display score text
+        scoreText = this.add.text(16, 16, 'P1 score: 0', {fontSize: '32px', fill: '#FFFAFA'});
+        scoreText2 = this.add.text(16, 16, 'P2 score: 0', {fontSize: '32px', fill: '#FFFAFA'});
 
-
+        //adds the enemy physics
         enemy = this.physics.add.sprite(500, 550, 'enemy');
         enemy.setScale(0.75);
 
@@ -120,7 +137,10 @@ class Level1 extends Phaser.Scene {
 
         enemy8 = this.physics.add.sprite(1125, 550, 'enemy');
         enemy8.setScale(0.75);
-        killText = this.add.text(16, 16, 'kills: 0', {fontSize: '32px', fill: '#FFFAFA'});
+
+        //display kill text
+        killText = this.add.text(16, 16, 'P1 kills: 0', {fontSize: '32px', fill: '#FFFAFA'});
+        killText2 = this.add.text(16, 16, 'P2 kills: 0', {fontSize: '32px', fill: '#FFFAFA'});
 
         //camera follow player1
         this.keys = this.input.keyboard.createCursorKeys();
@@ -128,9 +148,11 @@ class Level1 extends Phaser.Scene {
         this.cameras.main.zoom = 1;
         inputCursor = this.input;
 
+        //adds collision between player and walls
         this.physics.add.collider(player1Sprite, wallsLayer);
         worldBounds = this.physics.world.bounds;
 
+        //player 1 weapon physics
         playerArrow = this.physics.add.sprite(player1Sprite.x,player1Sprite.y,'arrow');
         playerArrow.setScale(0)
         spaceBar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
@@ -139,12 +161,16 @@ class Level1 extends Phaser.Scene {
     }
 
         update() {
-
+        //score text and kill text position player 1
         scoreText.x = player1Sprite.body.position.x;
-
         killText.x = player1Sprite.body.position.x;
-        //collect coins - for both players
 
+            //score text and kill text position player 2 (fixes on player 1 as camera)
+            scoreText2.x = player2Sprite.body.position.x;
+            killText2.x = player2Sprite.body.position.x;
+
+
+            //creates player 1 attack for arrow
             if(spaceBar.isDown && control === false){
                 //for fire again
                 playerArrow = this.physics.add.sprite(player1Sprite.x,player1Sprite.y,'arrow');
@@ -170,37 +196,46 @@ class Level1 extends Phaser.Scene {
             this.physics.add.overlap(playerArrow, enemy7, this.destroy,null,this);
             this.physics.add.overlap(playerArrow, enemy8, this.destroy,null,this);
 
-        //coin pickup
+        //coin pickup physics
         this.physics.add.overlap(player1Sprite, coin, this.collectCoin, null, this);
-        this.physics.add.overlap(player2Sprite, coin, this.collectCoin, null, this);
+        this.physics.add.overlap(player2Sprite, coin, this.collectCoin2, null, this);
 
         this.physics.add.overlap(player1Sprite, coin2, this.collectCoin, null, this);
-        this.physics.add.overlap(player2Sprite, coin2, this.collectCoin, null, this);
+        this.physics.add.overlap(player2Sprite, coin2, this.collectCoin2, null, this);
 
         this.physics.add.overlap(player1Sprite, coin3, this.collectCoin, null, this);
-        this.physics.add.overlap(player2Sprite, coin3, this.collectCoin, null, this);
+        this.physics.add.overlap(player2Sprite, coin3, this.collectCoin2, null, this);
 
         this.physics.add.overlap(player1Sprite, coin4, this.collectCoin, null, this);
-        this.physics.add.overlap(player2Sprite, coin4, this.collectCoin, null, this);
+        this.physics.add.overlap(player2Sprite, coin4, this.collectCoin2, null, this);
 
         this.physics.add.overlap(player1Sprite, coin5, this.collectCoin, null, this);
-        this.physics.add.overlap(player2Sprite, coin5, this.collectCoin, null, this);
+        this.physics.add.overlap(player2Sprite, coin5, this.collectCoin2, null, this);
 
         this.physics.add.overlap(player1Sprite, coin6, this.collectCoin, null, this);
-        this.physics.add.overlap(player2Sprite, coin6, this.collectCoin, null, this);
+        this.physics.add.overlap(player2Sprite, coin6, this.collectCoin2, null, this);
 
         this.physics.add.overlap(player1Sprite, coin7, this.collectCoin, null, this);
-        this.physics.add.overlap(player2Sprite, coin7, this.collectCoin, null, this);
+        this.physics.add.overlap(player2Sprite, coin7, this.collectCoin2, null, this);
 
         this.physics.add.overlap(player1Sprite, coin8, this.collectCoin, null, this);
-        this.physics.add.overlap(player2Sprite, coin8, this.collectCoin, null, this);
+        this.physics.add.overlap(player2Sprite, coin8, this.collectCoin2, null, this);
 
-        //score text position
+        //score text position player 1
         scoreText.x = player1Sprite.body.position.x - 350;
         scoreText.y = player1Sprite.body.position.y - 250;
 
-        killText.x = player1Sprite.body.position.x - -250;
+        //kill text position player 1
+        killText.x = player1Sprite.body.position.x - -200;
         killText.y = player1Sprite.body.position.y - 250;
+
+        //score text position player 2 (fixes on player 1 as camera)
+        scoreText2.x = player1Sprite.body.position.x - 350;
+        scoreText2.y = player1Sprite.body.position.y - 210;
+
+        //kill text position player 2 (fixes onto player 1 as camera)
+            killText2.x = player1Sprite.body.position.x - -200;
+            killText2.y = player1Sprite.body.position.y - 210;
 
         //player 1 movement
         this.keys = this.input.keyboard.addKeys(
@@ -245,7 +280,7 @@ class Level1 extends Phaser.Scene {
         enemy.setRotation(angle2);
         enemy.setRotation(angle2 + Math.PI / 2);
     }
-
+         //kill enemy and add 1 point to kill count player 1
          destroy(playerArrow,enemy) {
              enemy.disableBody(true, true);
              playerArrow.disableBody(true, true);
@@ -254,10 +289,17 @@ class Level1 extends Phaser.Scene {
              killText.setText('Kills: ' + kills);
          }
 
-//add player scores
+        //collect coin and add 10 points to score player 1
         collectCoin (player1Sprite, coin) {
-        coin.disableBody(true, true);
-        score += 10;
-        scoreText.setText('Score: ' + score);
-    }
+            coin.disableBody(true, true);
+            score += 10;
+            scoreText.setText('P1 Score: ' + score);
+        }
+
+            //collect coin and add 10 points to score player 2
+            collectCoin2 (player2Sprite, coin) {
+                coin.disableBody(true, true);
+                score2 += 10;
+                scoreText2.setText('P2 Score: ' + score2);
+        }
 }
