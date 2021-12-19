@@ -6,7 +6,7 @@ Web Games Development 2
 Module: COMP 10057
 
 
-*THIS IS A HOSTING BRANCH FOR FIREBASE*
+*THIS IS A TESTING BRANCH*
 
 
 
