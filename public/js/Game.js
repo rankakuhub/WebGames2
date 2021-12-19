@@ -3,10 +3,23 @@ let player1Sprite;
 let player2Sprite;
 let coin;
 let coin2;
+let coin3;
+let coin4;
+let coin5;
+let coin6;
+let coin7;
+let coin8;
 let score = 0;
 let scoreText;
 let cursors;
 let enemy;
+let enemy2;
+let enemy3;
+let enemy4;
+let enemy5;
+let enemy6;
+let enemy7;
+let enemy8;
 let map;
 let wallsLayer;
 let playerArrow;
@@ -72,14 +85,41 @@ class Level1 extends Phaser.Scene {
         player2Sprite = this.physics.add.sprite(200, 600, 'player2');
         player2Sprite.setScale(2);
         //collect coins/combined score
-        coin = this.physics.add.sprite(400, 500, 'coin');
-        coin2 = this.physics.add.sprite(400, 700, 'coin');
+        coin = this.physics.add.sprite(1125, 200, 'coin');
+        coin2 = this.physics.add.sprite(1125, 900, 'coin');
+        coin3 = this.physics.add.sprite(475, 300, 'coin');
+        coin4 = this.physics.add.sprite(475, 800, 'coin');
+        coin5 = this.physics.add.sprite(1765, 800, 'coin');
+        coin6 = this.physics.add.sprite(1765, 300, 'coin');
+        coin7 = this.physics.add.sprite(1500, 550, 'coin');
+        coin8 = this.physics.add.sprite(750, 550, 'coin');
         scoreText = this.add.text(16, 16, 'score: 0', {fontSize: '32px', fill: '#FFFAFA'});
 
 
 
-        enemy = this.physics.add.sprite(500, 600, 'enemy');
+        enemy = this.physics.add.sprite(500, 550, 'enemy');
         enemy.setScale(0.75);
+
+        enemy2 = this.physics.add.sprite(950, 300, 'enemy');
+        enemy2.setScale(0.75);
+
+        enemy3 = this.physics.add.sprite(1300, 300, 'enemy');
+        enemy3.setScale(0.75);
+
+        enemy4 = this.physics.add.sprite(950, 800, 'enemy');
+        enemy4.setScale(0.75);
+
+        enemy5 = this.physics.add.sprite(1300,800, 'enemy');
+        enemy5.setScale(0.75);
+
+        enemy6 = this.physics.add.sprite(1765, 550, 'enemy');
+        enemy6.setScale(0.75);
+
+        enemy7 = this.physics.add.sprite(1985, 550, 'enemy');
+        enemy7.setScale(0.75);
+
+        enemy8 = this.physics.add.sprite(1125, 550, 'enemy');
+        enemy8.setScale(0.75);
         killText = this.add.text(16, 16, 'kills: 0', {fontSize: '32px', fill: '#FFFAFA'});
 
         //camera follow player1
@@ -120,13 +160,40 @@ class Level1 extends Phaser.Scene {
                 control = false;
             }
 
+            //kill enemies
             this.physics.add.overlap(playerArrow, enemy, this.destroy,null,this);
+            this.physics.add.overlap(playerArrow, enemy2, this.destroy,null,this);
+            this.physics.add.overlap(playerArrow, enemy3, this.destroy,null,this);
+            this.physics.add.overlap(playerArrow, enemy4, this.destroy,null,this);
+            this.physics.add.overlap(playerArrow, enemy5, this.destroy,null,this);
+            this.physics.add.overlap(playerArrow, enemy6, this.destroy,null,this);
+            this.physics.add.overlap(playerArrow, enemy7, this.destroy,null,this);
+            this.physics.add.overlap(playerArrow, enemy8, this.destroy,null,this);
 
+        //coin pickup
         this.physics.add.overlap(player1Sprite, coin, this.collectCoin, null, this);
         this.physics.add.overlap(player2Sprite, coin, this.collectCoin, null, this);
 
         this.physics.add.overlap(player1Sprite, coin2, this.collectCoin, null, this);
         this.physics.add.overlap(player2Sprite, coin2, this.collectCoin, null, this);
+
+        this.physics.add.overlap(player1Sprite, coin3, this.collectCoin, null, this);
+        this.physics.add.overlap(player2Sprite, coin3, this.collectCoin, null, this);
+
+        this.physics.add.overlap(player1Sprite, coin4, this.collectCoin, null, this);
+        this.physics.add.overlap(player2Sprite, coin4, this.collectCoin, null, this);
+
+        this.physics.add.overlap(player1Sprite, coin5, this.collectCoin, null, this);
+        this.physics.add.overlap(player2Sprite, coin5, this.collectCoin, null, this);
+
+        this.physics.add.overlap(player1Sprite, coin6, this.collectCoin, null, this);
+        this.physics.add.overlap(player2Sprite, coin6, this.collectCoin, null, this);
+
+        this.physics.add.overlap(player1Sprite, coin7, this.collectCoin, null, this);
+        this.physics.add.overlap(player2Sprite, coin7, this.collectCoin, null, this);
+
+        this.physics.add.overlap(player1Sprite, coin8, this.collectCoin, null, this);
+        this.physics.add.overlap(player2Sprite, coin8, this.collectCoin, null, this);
 
         //score text position
         scoreText.x = player1Sprite.body.position.x - 350;
@@ -179,7 +246,7 @@ class Level1 extends Phaser.Scene {
         enemy.setRotation(angle2 + Math.PI / 2);
     }
 
-         destroy(playerArrow,enemy,) {
+         destroy(playerArrow,enemy) {
              enemy.disableBody(true, true);
              playerArrow.disableBody(true, true);
              control = false;
