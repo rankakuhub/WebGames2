@@ -66,7 +66,8 @@ class Level1 extends Phaser.Scene {
         this.load.image('player1', 'assets/game/Isis Front Idle.png');
         this.load.image('player2', 'assets/game/Ra Front Idle.png');
 
-        this.load.image('enemy', 'assets/game/Enemy_Placeholder.png')
+        this.load.image('enemy1', 'assets/game/Enemy1.png')
+        this.load.image('enemy2', 'assets/game/Enemy2.png')
     }
 
     create() {
@@ -114,29 +115,29 @@ class Level1 extends Phaser.Scene {
         scoreText2 = this.add.text(16, 16, 'P2 score: 0', {fontSize: '32px', fill: '#FFFAFA'});
 
         //adds the enemy physics
-        enemy = this.physics.add.sprite(500, 550, 'enemy');
-        enemy.setScale(0.75);
+        enemy = this.physics.add.sprite(500, 550, 'enemy1');
+        enemy.setScale(2);
 
-        enemy2 = this.physics.add.sprite(950, 300, 'enemy');
-        enemy2.setScale(0.75);
+        enemy2 = this.physics.add.sprite(950, 300, 'enemy1');
+        enemy2.setScale(2);
 
-        enemy3 = this.physics.add.sprite(1300, 300, 'enemy');
-        enemy3.setScale(0.75);
+        enemy3 = this.physics.add.sprite(1300, 300, 'enemy2');
+        enemy3.setScale(2);
 
-        enemy4 = this.physics.add.sprite(950, 800, 'enemy');
-        enemy4.setScale(0.75);
+        enemy4 = this.physics.add.sprite(950, 800, 'enemy2');
+        enemy4.setScale(2);
 
-        enemy5 = this.physics.add.sprite(1300,800, 'enemy');
-        enemy5.setScale(0.75);
+        enemy5 = this.physics.add.sprite(1300,800, 'enemy1');
+        enemy5.setScale(2);
 
-        enemy6 = this.physics.add.sprite(1765, 550, 'enemy');
-        enemy6.setScale(0.75);
+        enemy6 = this.physics.add.sprite(1765, 550, 'enemy2');
+        enemy6.setScale(2);
 
-        enemy7 = this.physics.add.sprite(1985, 550, 'enemy');
-        enemy7.setScale(0.75);
+        enemy7 = this.physics.add.sprite(1985, 550, 'enemy1');
+        enemy7.setScale(2);
 
-        enemy8 = this.physics.add.sprite(1125, 550, 'enemy');
-        enemy8.setScale(0.75);
+        enemy8 = this.physics.add.sprite(1125, 550, 'enemy1');
+        enemy8.setScale(2);
 
         //display kill text
         killText = this.add.text(16, 16, 'P1 kills: 0', {fontSize: '32px', fill: '#FFFAFA'});
@@ -275,10 +276,10 @@ class Level1 extends Phaser.Scene {
         }
 
         //enemy attacking stuff
-        let angle2 = Phaser.Math.Angle.Between(enemy.x, enemy.y, player1Sprite.x, player1Sprite.y);
+       /* let angle2 = Phaser.Math.Angle.Between(enemy.x, enemy.y, player1Sprite.x, player1Sprite.y);
         enemy.setRotation(angle2);
         enemy.setRotation(angle2);
-        enemy.setRotation(angle2 + Math.PI / 2);
+        enemy.setRotation(angle2 + Math.PI / 2);*/
     }
          //kill enemy and add 1 point to kill count player 1
          destroy(playerArrow,enemy) {
