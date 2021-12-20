@@ -24,6 +24,7 @@ let enemy7;
 let enemy8;
 let map;
 let wallsLayer;
+let groundLayer;
 let playerArrow;
 let control = false;
 let worldBounds;
@@ -47,19 +48,10 @@ class Level1 extends Phaser.Scene {
         game.scale.pageAlignVertically = true;
         game.scale.refresh();
 
-        this.load.image('ground', 'assets/game/Level2_Ground.png');
-        this.load.image('walls', 'assets/game/Level2_Walls.png');
-        //loads the image assets ready for creation
-        this.load.image('ground', '../assets/game/images/Level2_Ground.png');
-        this.load.image('walls', '../assets/game/images/Level2_Walls.png');
+        this.load.image('tiles', 'assets/game/Tilesheet.png');
+        this.load.tilemapTiledJSON('map', 'assets/game/Finalmap.json');
 
         this.load.image('arrow', 'assets/game/ArrowAsset.png');
-
-        this.load.image('tiles', 'assets/game/WGD2-Tilesheet2.2.png')
-        this.load.image('tiles2', 'assets/game/WGD2-Tilesheet_Walls2.1.png')
-        this.load.tilemapTiledJSON('tilemap', 'assets/game/Level_2.json')
-        this.load.image('tiles', 'assets/game/WGD2-FinalTilesheet.png')
-        this.load.tilemapTiledJSON('tilemap', 'assets/game/Level2_Final.json')
 
         this.load.image('coin', 'assets/game/Coin.png');
 
@@ -71,14 +63,11 @@ class Level1 extends Phaser.Scene {
     }
 
     create() {
-        const map = this.make.tilemap({key: 'tilemap'})
-        const tileset = map.addTilesetImage('WGD2 - FinalTilesheet', 'tiles')
+        const map = this.make.tilemap({key: 'map'})
+        const tileset = map.addTilesetImage('Tilesheet', 'tiles')
 
-
-        map.createStaticLayer('Ground', tileset)
-        const wallsLayer = map.createStaticLayer('Walls', tileset)
-
-        //wall collider set to true
+        groundLayer = map.createStaticLayer('ground', tileset, 0, 0);
+        wallsLayer = map.createStaticLayer('walls', tileset,0, 0);
         wallsLayer.setCollisionByProperty({collides: true})
 
         const debugGraphics = this.add.graphics().setAlpha(0.7)
@@ -88,13 +77,15 @@ class Level1 extends Phaser.Scene {
             faceColor: new Phaser.Display.Color(40, 39, 37, 255)
         })
 
-        //adds the ground and wall layers onto the game
-        this.add.image(0,0, 'ground').setOrigin(0,0);
-        this.add.image(0, 0, 'walls').setOrigin(0, 0);
-
         //player 1 physics
         player1Sprite = this.physics.add.sprite(200, 500, 'player1');
         player1Sprite.setScale(2);
+
+        this.physics.add.collider(player1Sprite, wallsLayer, this);
+
+        if (this.physics.collide(player1Sprite, wallsLayer)) {
+            console.log("collision detected");
+        }
 
         //player 2 physics
         player2Sprite = this.physics.add.sprite(200, 600, 'player2');
@@ -150,7 +141,7 @@ class Level1 extends Phaser.Scene {
         inputCursor = this.input;
 
         //adds collision between player and walls
-        this.physics.add.collider(player1Sprite, wallsLayer);
+        //this.physics.add.collider(player1Sprite, wallsLayer);
         worldBounds = this.physics.world.bounds;
 
         //player 1 weapon physics
