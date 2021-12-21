@@ -63,29 +63,23 @@ class Level1 extends Phaser.Scene {
     }
 
     create() {
-        const map = this.make.tilemap({key: 'map'})
-        const tileset = map.addTilesetImage('Tilesheet', 'tiles')
+        const map = this.make.tilemap({key: 'map'});
+        const tileset = map.addTilesetImage('Tilesheet', 'tiles');
 
-        groundLayer = map.createStaticLayer('ground', tileset, 0, 0);
-        wallsLayer = map.createStaticLayer('walls', tileset,0, 0);
+        groundLayer = map.createLayer('ground', tileset, 0, 0);
+        wallsLayer = map.createLayer('walls', tileset,0, 0);
         wallsLayer.setCollisionByProperty({collides: true})
 
-        const debugGraphics = this.add.graphics().setAlpha(0.7)
+/*        const debugGraphics = this.add.graphics().setAlpha(0.7)
         wallsLayer.renderDebug(debugGraphics, {
             tileColor: null,
             collidingTileColor: new Phaser.Display.Color(243, 234, 48, 255),
             faceColor: new Phaser.Display.Color(40, 39, 37, 255)
-        })
+        })*/
 
         //player 1 physics
         player1Sprite = this.physics.add.sprite(200, 500, 'player1');
         player1Sprite.setScale(2);
-
-        this.physics.add.collider(player1Sprite, wallsLayer, this);
-
-        if (this.physics.collide(player1Sprite, wallsLayer)) {
-            console.log("collision detected");
-        }
 
         //player 2 physics
         player2Sprite = this.physics.add.sprite(200, 600, 'player2');
@@ -150,6 +144,8 @@ class Level1 extends Phaser.Scene {
         spaceBar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         mouse = this.input.mousePointer;
 
+        this.physics.add.collider(player1Sprite, wallsLayer);
+        this.physics.add.collider(player2Sprite, wallsLayer);
     }
 
         update() {
@@ -239,31 +235,31 @@ class Level1 extends Phaser.Scene {
             });
 
         if (this.keys.left.isDown) {
-            player1Sprite.x -= 2;
+            player1Sprite.body.setVelocityX(-100);
         }
         if (this.keys.right.isDown) {
-            player1Sprite.x += 2;
+            player1Sprite.body.setVelocityX(100);
         }
         if (this.keys.up.isDown) {
-            player1Sprite.y -= 2;
+            player1Sprite.body.setVelocityY(-100);
         }
         if (this.keys.down.isDown) {
-            player1Sprite.y += 2;
+            player1Sprite.body.setVelocityY(100);
         }
 
         //player 2 movement
         cursors = this.input.keyboard.createCursorKeys();
         if (cursors.left.isDown) {
-            player2Sprite.x -= 2;
+            player2Sprite.body.setVelocityX(-100);
         }
         if (cursors.right.isDown) {
-            player2Sprite.x += 2;
+            player2Sprite.body.setVelocityX(100);
         }
         if (cursors.up.isDown) {
-            player2Sprite.y -= 2;
+            player2Sprite.body.setVelocityY(-100);
         }
         if (cursors.down.isDown) {
-            player2Sprite.y += 2;
+            player2Sprite.body.setVelocityY(100);
         }
 
         //enemy attacking stuff
