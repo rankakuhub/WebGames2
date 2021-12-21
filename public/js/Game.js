@@ -235,31 +235,31 @@ class Level1 extends Phaser.Scene {
             });
 
         if (this.keys.left.isDown) {
-            player1Sprite.body.setVelocityX(-100);
+            player1Sprite.body.setVelocityX(-200);
         }
         if (this.keys.right.isDown) {
-            player1Sprite.body.setVelocityX(100);
+            player1Sprite.body.setVelocityX(200);
         }
         if (this.keys.up.isDown) {
-            player1Sprite.body.setVelocityY(-100);
+            player1Sprite.body.setVelocityY(-200);
         }
         if (this.keys.down.isDown) {
-            player1Sprite.body.setVelocityY(100);
+            player1Sprite.body.setVelocityY(200);
         }
 
         //player 2 movement
         cursors = this.input.keyboard.createCursorKeys();
         if (cursors.left.isDown) {
-            player2Sprite.body.setVelocityX(-100);
+            player2Sprite.body.setVelocityX(-200);
         }
         if (cursors.right.isDown) {
-            player2Sprite.body.setVelocityX(100);
+            player2Sprite.body.setVelocityX(200);
         }
         if (cursors.up.isDown) {
-            player2Sprite.body.setVelocityY(-100);
+            player2Sprite.body.setVelocityY(-200);
         }
         if (cursors.down.isDown) {
-            player2Sprite.body.setVelocityY(100);
+            player2Sprite.body.setVelocityY(200);
         }
 
         //enemy attacking stuff
