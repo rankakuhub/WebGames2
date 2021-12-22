@@ -26,11 +26,13 @@ let map;
 let wallsLayer;
 let groundLayer;
 let playerArrow;
+let playerSword;
 let control = false;
 let worldBounds;
 let inputCursor;
 let mouse;
 let spaceBar;
+let shootKey;
 let kills = 0;
 let kills2 = 0;
 let killText;
@@ -52,6 +54,7 @@ class Level1 extends Phaser.Scene {
         this.load.tilemapTiledJSON('map', 'assets/game/Finalmap.json');
 
         this.load.image('arrow', 'assets/game/ArrowAsset.png');
+        this.load.image('sword', 'assets/game/sword.png');
 
         this.load.image('coin', 'assets/game/Coin.png');
 
@@ -60,6 +63,12 @@ class Level1 extends Phaser.Scene {
 
         this.load.image('enemy1', 'assets/game/Enemy1.png')
         this.load.image('enemy2', 'assets/game/Enemy2.png')
+
+        this.bullets = this.physics.add.group({
+            defaultKey: 'arrow',
+            maxSize: 10
+        });
+
     }
 
     create() {
@@ -135,7 +144,9 @@ class Level1 extends Phaser.Scene {
         inputCursor = this.input;
 
         //adds collision between player and walls
-        //this.physics.add.collider(player1Sprite, wallsLayer);
+        this.physics.world.setBounds(0,0, 14000, 900000);
+        player2Sprite.setCollideWorldBounds(true);
+        player1Sprite.setCollideWorldBounds(true);
         worldBounds = this.physics.world.bounds;
 
         //player 1 weapon physics
@@ -144,8 +155,14 @@ class Level1 extends Phaser.Scene {
         spaceBar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         mouse = this.input.mousePointer;
 
+
+        playerSword = this.physics.add.sprite(player2Sprite.x,player2Sprite.y,'sword');
+        playerSword.setScale(0)
+        shootKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
+
         this.physics.add.collider(player1Sprite, wallsLayer);
         this.physics.add.collider(player2Sprite, wallsLayer);
+
     }
 
         update() {
@@ -174,6 +191,22 @@ class Level1 extends Phaser.Scene {
                 control = false;
             }
 
+
+            if(shootKey.isDown && control === false){
+                //for fire again
+                playerSword = this.physics.add.sprite(player2Sprite.x,player2Sprite.y,'sword');
+                //move to mouse position
+                this.physics.moveTo(playerSword,inputCursor.x,inputCursor.y, 250);
+                playerSword.setScale(1);
+                control = true;
+
+            }
+
+            if(playerSword.x > worldBounds.width || playerSword.y > worldBounds.height ||playerSword.x < 0 || playerSword.y < 0)
+            {
+                control = false;
+            }
+
             //kill enemies
             this.physics.add.overlap(playerArrow, enemy, this.destroy,null,this);
             this.physics.add.overlap(playerArrow, enemy2, this.destroy,null,this);
@@ -183,6 +216,15 @@ class Level1 extends Phaser.Scene {
             this.physics.add.overlap(playerArrow, enemy6, this.destroy,null,this);
             this.physics.add.overlap(playerArrow, enemy7, this.destroy,null,this);
             this.physics.add.overlap(playerArrow, enemy8, this.destroy,null,this);
+
+            this.physics.add.overlap(playerSword, enemy, this.destroy2,null,this);
+            this.physics.add.overlap(playerSword, enemy2, this.destroy2,null,this);
+            this.physics.add.overlap(playerSword, enemy3, this.destroy2,null,this);
+            this.physics.add.overlap(playerSword, enemy4, this.destroy2,null,this);
+            this.physics.add.overlap(playerSword, enemy5, this.destroy2,null,this);
+            this.physics.add.overlap(playerSword, enemy6, this.destroy2,null,this);
+            this.physics.add.overlap(playerSword, enemy7, this.destroy2,null,this);
+            this.physics.add.overlap(playerSword, enemy8, this.destroy2,null,this);
 
         //coin pickup physics
         this.physics.add.overlap(player1Sprite, coin, this.collectCoin, null, this);
@@ -235,31 +277,39 @@ class Level1 extends Phaser.Scene {
             });
 
         if (this.keys.left.isDown) {
-            player1Sprite.body.setVelocityX(-200);
+            player1Sprite.body.setVelocityX(-1);
+            player1Sprite.x -= 1.5;
         }
         if (this.keys.right.isDown) {
-            player1Sprite.body.setVelocityX(200);
+            player1Sprite.body.setVelocityX(1);
+            player1Sprite.x += 1.5;
         }
         if (this.keys.up.isDown) {
-            player1Sprite.body.setVelocityY(-200);
+            player1Sprite.body.setVelocityY(-1);
+            player1Sprite.y -= 1.5;
         }
         if (this.keys.down.isDown) {
-            player1Sprite.body.setVelocityY(200);
+            player1Sprite.body.setVelocityY(1);
+            player1Sprite.y += 1.5;
         }
 
         //player 2 movement
         cursors = this.input.keyboard.createCursorKeys();
         if (cursors.left.isDown) {
-            player2Sprite.body.setVelocityX(-200);
+            player2Sprite.body.setVelocityX(-1);
+            player2Sprite.x -= 1.5;
         }
         if (cursors.right.isDown) {
-            player2Sprite.body.setVelocityX(200);
+            player2Sprite.body.setVelocityX(1);
+            player2Sprite.x += 1.5;
         }
         if (cursors.up.isDown) {
-            player2Sprite.body.setVelocityY(-200);
+            player2Sprite.body.setVelocityY(-1);
+            player2Sprite.y -= 1.5;
         }
         if (cursors.down.isDown) {
-            player2Sprite.body.setVelocityY(200);
+            player2Sprite.body.setVelocityY(1);
+            player2Sprite.y += 1.5;
         }
 
         //enemy attacking stuff
@@ -277,6 +327,13 @@ class Level1 extends Phaser.Scene {
              killText.setText('P1 Kills: ' + kills);
          }
 
+    destroy2(playerSword,enemy) {
+        enemy.disableBody(true, true);
+        playerSword.disableBody(true, true);
+        control = false;
+        kills2 += 1;
+        killText2.setText('P2 Kills: ' + kills2);
+    }
 
         //collect coin and add 10 points to score player 1
         collectCoin (player1Sprite, coin) {
