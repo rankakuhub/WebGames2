@@ -11,7 +11,7 @@ const config = {
         }
     },
 
-    scene: [MenuUi, Credits, Level1],
+    scene: [MenuUi, Credits, Level1, P1Win, P2Win, Tied],
 };
 
 let game = new Phaser.Game(config);

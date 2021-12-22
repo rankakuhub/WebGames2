@@ -350,7 +350,12 @@ class Level1 extends Phaser.Scene {
         collectCoin (player1Sprite, coin) {
             coin.disableBody(true, true);
             score += 10;
-            scoreText.setText('P1 Score: ' + score);
+            scoreText.setText('P1 Score: ' + score)
+
+            if(score == 50){
+                this.scene.start('P1Win');
+                this.scene.stop('Level1');
+            }
         }
 
             //collect coin and add 10 points to score player 2
@@ -358,5 +363,20 @@ class Level1 extends Phaser.Scene {
                 coin.disableBody(true, true);
                 score2 += 10;
                 scoreText2.setText('P2 Score: ' + score2);
+
+                if(score2 == 50){
+                    this.scene.start('P2Win');
+                    this.scene.stop('Level1');
+                }
         }
+
+    //creates a function to hold a tie for both players scores
+    GameTie (collectCoin, collectCoin2) {
+
+        if(score && score2 == 40){
+            this.scene.start('Tied');
+            this.scene.stop('Level1');
+        }
+    };
+
 }
