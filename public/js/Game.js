@@ -360,6 +360,7 @@ class Level1 extends Phaser.Scene {
             if(score == 50){
                 this.scene.start('P1Win');
                 this.scene.stop('Level1');
+                sound.stop();
             }
         }
 
@@ -373,8 +374,8 @@ class Level1 extends Phaser.Scene {
                     this.scene.start('P2Win');
                     this.scene.stop('Level1');
 
+                    sound.stop();
                 }
-
         }
 
 }
