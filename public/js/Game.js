@@ -37,6 +37,7 @@ let kills = 0;
 let kills2 = 0;
 let killText;
 let killText2;
+let sound;
 
 //class dedicated to level 1 of the game with unique name
 class Level1 extends Phaser.Scene {
@@ -64,6 +65,8 @@ class Level1 extends Phaser.Scene {
         this.load.image('enemy1', 'assets/game/Enemy1.png')
         this.load.image('enemy2', 'assets/game/Enemy2.png')
 
+        this.load.audio('music', 'assets/game/Enchantment (Loop).mp3');
+
         this.bullets = this.physics.add.group({
             defaultKey: 'arrow',
             maxSize: 10
@@ -72,8 +75,14 @@ class Level1 extends Phaser.Scene {
     }
 
     create() {
+
+
         const map = this.make.tilemap({key: 'map'});
         const tileset = map.addTilesetImage('Tilesheet', 'tiles');
+
+        sound = this.sound.add('music',{volume: 0.075});
+        sound.loop = true;
+        sound.play();
 
         groundLayer = map.createLayer('ground', tileset, 0, 0);
         wallsLayer = map.createLayer('walls', tileset,0, 0);
@@ -162,6 +171,8 @@ class Level1 extends Phaser.Scene {
 
         this.physics.add.collider(player1Sprite, wallsLayer);
         this.physics.add.collider(player2Sprite, wallsLayer);
+
+
 
     }
 
