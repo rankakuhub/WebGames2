@@ -9,6 +9,7 @@ let coin5;
 let coin6;
 let coin7;
 let coin8;
+let coin9;
 let score = 0;
 let score2 = 0;
 let scoreText;
@@ -112,6 +113,7 @@ class Level1 extends Phaser.Scene {
         coin6 = this.physics.add.sprite(1765, 300, 'coin');
         coin7 = this.physics.add.sprite(1500, 550, 'coin');
         coin8 = this.physics.add.sprite(750, 550, 'coin');
+        coin9 = this.physics.add.sprite(1125, 450, 'coin');
 
         //display score text
         scoreText = this.add.text(16, 16, 'P1 score: 0', {fontSize: '32px', fill: '#FFFAFA'});
@@ -262,6 +264,9 @@ class Level1 extends Phaser.Scene {
         this.physics.add.overlap(player1Sprite, coin8, this.collectCoin, null, this);
         this.physics.add.overlap(player2Sprite, coin8, this.collectCoin2, null, this);
 
+        this.physics.add.overlap(player1Sprite, coin9, this.collectCoin, null, this);
+        this.physics.add.overlap(player2Sprite, coin9, this.collectCoin2, null, this);
+
         //score text position player 1
         scoreText.x = player1Sprite.body.position.x - 350;
         scoreText.y = player1Sprite.body.position.y - 250;
@@ -367,16 +372,9 @@ class Level1 extends Phaser.Scene {
                 if(score2 == 50){
                     this.scene.start('P2Win');
                     this.scene.stop('Level1');
+
                 }
-        }
 
-    //creates a function to hold a tie for both players scores
-    GameTie (collectCoin, collectCoin2) {
-
-        if(score && score2 == 40){
-            this.scene.start('Tied');
-            this.scene.stop('Level1');
         }
-    };
 
 }
